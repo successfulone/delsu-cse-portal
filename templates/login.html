@@ -1,173 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>delsu.cse-25-26.edu.ng</title>
-
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial, Helvetica, sans-serif;
-}
-
-body{
-height:100vh;
-overflow:hidden;
-position:relative;
-display:flex;
-justify-content:center;
-align-items:center;
-}
-
-/* FULL BACKGROUND IMAGE */
-body::before{
-content:"";
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:url('/static/bg.jpg') center center/cover no-repeat;
-filter:blur(8px);
-transform:scale(1.1);
-z-index:-2;
-}
-
-/* DARK OVERLAY */
-body::after{
-content:"";
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.45);
-z-index:-1;
-}
-
-/* LOGIN CARD */
-.card{
-width:95%;
-max-width:420px;
-background:rgba(255,255,255,0.14);
-backdrop-filter:blur(14px);
-padding:35px 28px;
-border-radius:20px;
-box-shadow:0 15px 40px rgba(0,0,0,0.35);
-color:white;
-text-align:center;
-}
-
-/* LOGO */
-.logo{
-width:90px;
-height:90px;
-object-fit:contain;
-margin-bottom:12px;
-}
-
-/* TITLE */
-h1{
-font-size:24px;
-margin-bottom:8px;
-}
-
-.sub{
-font-size:14px;
-opacity:0.95;
-margin-bottom:25px;
-line-height:1.5;
-}
-
-/* FORM */
-input{
-width:100%;
-padding:14px;
-margin-bottom:15px;
-border:none;
-outline:none;
-border-radius:10px;
-font-size:14px;
-}
-
-button{
-width:100%;
-padding:14px;
-border:none;
-border-radius:10px;
-background:#0056ff;
-color:white;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
-transition:.3s;
-}
-
-button:hover{
-background:#003cb3;
-}
-
-.error{
-background:#ff4d4d;
-padding:10px;
-border-radius:8px;
-margin-bottom:15px;
-font-size:14px;
-}
-
-/* MOBILE */
-@media(max-width:500px){
-.card{
-padding:25px 18px;
-}
-
-h1{
-font-size:20px;
-}
-
-.logo{
-width:75px;
-height:75px;
-}
-}
-</style>
+<title>Login</title>
+<link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
 
-<div class="card">
+<div class="bg">
+<div class="overlay"></div>
 
-<img src="/static/logo.png" class="logo">
+<div class="center-box">
 
-<h1>CSE Portal</h1>
-
-<div class="sub">
-delsu.cse-25-26.edu.ng <br>
-Department of Computer Science Education
-</div>
-
-{% if error %}
-<div class="error">{{ error }}</div>
-{% endif %}
+<h3>Student Login</h3>
 
 <form method="POST">
-
-<input
-type="text"
-name="matric"
-placeholder="FOE/25/26/XXXXXX or FOE/CEP/25/26/XXXXXX"
-required>
-
-<button type="submit">
-Login
-</button>
-
+<input name="matric" placeholder="Matric Number" style="width:100%;padding:10px;">
+<button>Login</button>
 </form>
 
+</div>
 </div>
 
 </body>

@@ -1,0 +1,70 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* LOGIN + HOME BACKGROUND */
+.bg {
+    background: url("/static/bg.jpg") no-repeat center center/cover;
+    height: 100vh;
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+}
+
+/* CENTER BOX */
+.center-box {
+    position: relative;
+    z-index: 2;
+    max-width: 400px;
+    margin: auto;
+    top: 20%;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+}
+
+/* HEADER */
+.header {
+    background: #0d1b2a;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* BUTTONS */
+button {
+    width: 100%;
+    padding: 10px;
+    background: #0077b6;
+    border: none;
+    color: white;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+/* DASHBOARD */
+.dashboard {
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* LOGO */
+.logo {
+    width: 80px;
+    display: block;
+    margin: 0 auto 10px;
+}

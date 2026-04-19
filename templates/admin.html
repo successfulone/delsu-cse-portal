@@ -1,180 +1,32 @@
+<!-- templates/admin.html -->
 <!DOCTYPE html>
 <html>
 <head>
-<title>Admin Dashboard</title>
-
-<style>
-body{
-margin:0;
-font-family:Arial;
-background:#f4f6f9;
-}
-
-.header{
-background:#1e2a38;
-color:white;
-padding:20px;
-text-align:center;
-font-size:22px;
-}
-
-.container{
-padding:20px;
-max-width:1100px;
-margin:auto;
-}
-
-.card{
-background:white;
-padding:20px;
-border-radius:10px;
-margin-bottom:20px;
-box-shadow:0 2px 8px rgba(0,0,0,0.1);
-}
-
-input, select{
-padding:10px;
-margin:5px 0;
-width:100%;
-border:1px solid #ccc;
-border-radius:5px;
-}
-
-button{
-padding:10px 15px;
-background:#007bff;
-color:white;
-border:none;
-border-radius:5px;
-cursor:pointer;
-margin-top:10px;
-}
-
-button:hover{
-background:#0056b3;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:10px;
-}
-
-th, td{
-padding:10px;
-border-bottom:1px solid #ddd;
-text-align:left;
-}
-
-a{
-color:red;
-text-decoration:none;
-}
-
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
-}
-
-@media(max-width:768px){
-.grid{
-grid-template-columns:1fr;
-}
-}
-</style>
-
+<title>Admin Panel</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+<body class="page">
 
-<body>
+<div class="card large">
+    <h2>📊 Admin Dashboard</h2>
 
-<div class="header">
-Admin Dashboard - CSE Portal
-</div>
+    <table>
+        <tr>
+            <th>Matric Number</th>
+            <th>Name</th>
+            <th>Level</th>
+        </tr>
 
-<div class="container">
+        {% for matric, data in users.items() %}
+        <tr>
+            <td>{{ matric }}</td>
+            <td>{{ data.name }}</td>
+            <td>{{ data.level }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 
-<div class="grid">
-
-<!-- ADD STUDENT -->
-<div class="card">
-<h3>Add Student</h3>
-
-<form action="/add_student" method="POST">
-<input name="matric" placeholder="Matric Number" required>
-<input name="name" placeholder="Full Name" required>
-<select name="level">
-<option>100</option>
-<option>200</option>
-<option>300</option>
-<option>400</option>
-</select>
-<button>Add Student</button>
-</form>
-</div>
-
-<!-- BULK UPLOAD -->
-<div class="card">
-<h3>Bulk Upload (CSV)</h3>
-
-<form action="/upload_students" method="POST" enctype="multipart/form-data">
-<input type="file" name="file" required>
-<button>Upload CSV</button>
-</form>
-
-<hr>
-
-<h3>Upload Department File</h3>
-
-<form action="/upload_file" method="POST" enctype="multipart/form-data">
-<input type="file" name="file" required>
-<button>Upload File</button>
-</form>
-</div>
-
-</div>
-
-<!-- STUDENTS TABLE -->
-<div class="card">
-
-<h3>Students List</h3>
-
-<table>
-<tr>
-<th>Matric</th>
-<th>Name</th>
-<th>Level</th>
-<th>Action</th>
-</tr>
-
-{% for s in students %}
-<tr>
-<td>{{ s[0] }}</td>
-<td>{{ s[1] }}</td>
-<td>{{ s[2] }}</td>
-<td><a href="/delete/{{ s[0] }}">Delete</a></td>
-</tr>
-{% endfor %}
-
-</table>
-
-</div>
-
-<!-- FILES -->
-<div class="card">
-
-<h3>Uploaded Files</h3>
-
-<ul>
-{% for f in files %}
-<li>
-<a href="/downloads/{{ f }}">{{ f }}</a>
-</li>
-{% endfor %}
-</ul>
-
-</div>
-
+    <a href="/admin-logout" class="btn">Logout</a>
 </div>
 
 </body>

@@ -1,177 +1,99 @@
-from flask import Flask, render_template, request, redirect, session, send_from_directory
-import sqlite3
-import os
-import csv
+# app.py
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+import re
 
 app = Flask(__name__)
-app.secret_key = "secret"
+app.secret_key = "change-this-secret-key"
 
-DB = "database.db"
-UPLOAD_FOLDER = "uploads"
+# Allowed matric numbers (sample)
+ALLOWED_USERS = {
+    "FOE/25/26/123456": {"name": "John Doe", "level": "100"},
+    "FOE/25/26/654321": {"name": "Jane Smith", "level": "200"},
+    "FOE/CEP/25/26/111222": {"name": "Peter Paul", "level": "100"},
+}
 
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-
-# ---------------- DB ----------------
-def init():
-    conn = sqlite3.connect(DB)
-    cur = conn.cursor()
-
-    cur.execute("""
-    CREATE TABLE IF NOT EXISTS students(
-        matric TEXT PRIMARY KEY,
-        name TEXT,
-        level TEXT
-    )
-    """)
-
-    conn.commit()
-    conn.close()
-
-init()
+ADMIN_USER = "admin"
+ADMIN_PASS = "admin123"
 
 
-# ---------------- HOME ----------------
+def valid_matric(matric):
+    pattern1 = r"^FOE/25/26/\d{6}$"
+    pattern2 = r"^FOE/CEP/25/26/\d{6}$"
+    return re.match(pattern1, matric) or re.match(pattern2, matric)
+
+
 @app.route("/")
 def home():
     return render_template("home.html")
 
 
-# ---------------- LOGIN ----------------
-@app.route("/login", methods=["GET","POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        matric = request.form["matric"].strip().upper()
+        matric = request.form.get("matric", "").strip().upper()
 
-        conn = sqlite3.connect(DB)
-        cur = conn.cursor()
+        if not valid_matric(matric):
+            flash("Invalid matric number format.")
+            return redirect(url_for("login"))
 
-        cur.execute("SELECT * FROM students WHERE UPPER(matric)=?", (matric,))
-        user = cur.fetchone()
+        if matric not in ALLOWED_USERS:
+            flash("Matric number not recognized in CSE department.")
+            return redirect(url_for("login"))
 
-        conn.close()
-
-        if user:
-            session["student"] = user[0]
-            return redirect("/dashboard")
+        session["user"] = matric
+        return redirect(url_for("dashboard"))
 
     return render_template("login.html")
 
 
-# ---------------- DASHBOARD ----------------
 @app.route("/dashboard")
 def dashboard():
-    if "student" not in session:
-        return redirect("/login")
+    if "user" not in session:
+        return redirect(url_for("login"))
 
-    return render_template("dashboard.html", matric=session["student"])
+    user = ALLOWED_USERS[session["user"]]
+    return render_template(
+        "dashboard.html",
+        matric=session["user"],
+        name=user["name"],
+        level=user["level"]
+    )
 
 
-# ---------------- ADMIN LOGIN (CASE INSENSITIVE) ----------------
-@app.route("/admin_login", methods=["GET","POST"])
-def admin_login():
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("home"))
+
+
+@app.route("/admin", methods=["GET", "POST"])
+def admin():
     if request.method == "POST":
-        username = request.form["username"].lower().strip()
-        password = request.form["password"]
+        username = request.form.get("username")
+        password = request.form.get("password")
 
-        if username == "successful" and password == "Empire223@":
+        if username == ADMIN_USER and password == ADMIN_PASS:
             session["admin"] = True
-            return redirect("/admin")
+            return redirect(url_for("admin_panel"))
+
+        flash("Invalid admin login.")
+        return redirect(url_for("admin"))
 
     return render_template("admin_login.html")
 
 
-# ---------------- ADMIN ----------------
-@app.route("/admin")
-def admin():
-    if not session.get("admin"):
-        return redirect("/admin_login")
+@app.route("/admin-panel")
+def admin_panel():
+    if "admin" not in session:
+        return redirect(url_for("admin"))
 
-    conn = sqlite3.connect(DB)
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM students")
-    students = cur.fetchall()
-    conn.close()
-
-    files = os.listdir(UPLOAD_FOLDER)
-
-    return render_template("admin.html", students=students, files=files)
+    return render_template("admin.html", users=ALLOWED_USERS)
 
 
-# ---------------- ADD STUDENT ----------------
-@app.route("/add_student", methods=["POST"])
-def add_student():
-    matric = request.form["matric"].strip().upper()
-    name = request.form["name"]
-    level = request.form["level"]
-
-    conn = sqlite3.connect(DB)
-    cur = conn.cursor()
-
-    cur.execute("INSERT OR REPLACE INTO students VALUES (?,?,?)",
-                (matric, name, level))
-
-    conn.commit()
-    conn.close()
-
-    return redirect("/admin")
-
-
-# ---------------- BULK CSV UPLOAD ----------------
-@app.route("/upload_students", methods=["POST"])
-def upload_students():
-    file = request.files["file"]
-    path = os.path.join(UPLOAD_FOLDER, file.filename)
-    file.save(path)
-
-    conn = sqlite3.connect(DB)
-    cur = conn.cursor()
-
-    with open(path, newline='') as f:
-        reader = csv.reader(f)
-        for row in reader:
-            if len(row) >= 2:
-                cur.execute("INSERT OR REPLACE INTO students VALUES (?,?,?)",
-                            (row[0].upper(), row[1], row[2] if len(row)>2 else "ND"))
-
-    conn.commit()
-    conn.close()
-
-    return redirect("/admin")
-
-
-# ---------------- FILE UPLOAD (FIXED 404) ----------------
-@app.route("/upload_file", methods=["POST"])
-def upload_file():
-    file = request.files["file"]
-    file.save(os.path.join(UPLOAD_FOLDER, file.filename))
-    return redirect("/admin")
-
-
-# ---------------- DOWNLOAD FILES ----------------
-@app.route("/downloads/<filename>")
-def downloads(filename):
-    return send_from_directory(UPLOAD_FOLDER, filename)
-
-
-# ---------------- DELETE ----------------
-@app.route("/delete/<matric>")
-def delete(matric):
-    conn = sqlite3.connect(DB)
-    cur = conn.cursor()
-
-    cur.execute("DELETE FROM students WHERE matric=?", (matric,))
-    conn.commit()
-    conn.close()
-
-    return redirect("/admin")
-
-
-# ---------------- LOGOUT ----------------
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect("/login")
+@app.route("/admin-logout")
+def admin_logout():
+    session.pop("admin", None)
+    return redirect(url_for("home"))
 
 
 if __name__ == "__main__":
