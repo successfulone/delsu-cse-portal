@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="admin">
+
+    <h2>Admin Dashboard</h2>
+
+    <!-- ANNOUNCEMENTS -->
+    <h3>Post Announcement</h3>
+
+    <form method="POST" action="/admin/add-announcement">
+        <input type="text" name="title" placeholder="Title">
+        <textarea name="content" placeholder="Content"></textarea>
+        <button type="submit">Post</button>
+    </form>
+
+    <!-- FILE UPLOAD -->
+    <h3>Upload Department File</h3>
+
+    <form method="POST" action="/admin/upload-file" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <button type="submit">Upload</button>
+    </form>
+
+    <!-- FILE LIST -->
+    <h3>Uploaded Files</h3>
+
+    {% for file in files %}
+        <div class="card">
+            📄 {{ file }}
+        </div>
+    {% endfor %}
+
+    <!-- STUDENTS -->
+    <h3>Students</h3>
+
+    <table>
+        <tr>
+            <th>Matric</th>
+            <th>Name</th>
+            <th>Level</th>
+        </tr>
+
+        {% for s in students %}
+        <tr>
+            <td>{{ s.matric }}</td>
+            <td>{{ s.name }}</td>
+            <td>{{ s.level }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+{% endblock %}

@@ -1,1 +1,28 @@
+{% extends "base.html" %}
 
+{% block content %}
+
+<div class="hero">
+    <h1>Department of Computer Science Education</h1>
+    <h2>(CSE 25/26 SESSION)</h2>
+
+    <p>
+        Welcome to the official departmental portal.
+        Stay updated with academic news, announcements, and departmental activities.
+    </p>
+
+</div>
+
+<div class="section">
+    <h2>📢 Latest Announcements</h2>
+
+    {% for a in announcements %}
+        <div class="card">
+            <h3>{{ a.title }}</h3>
+            <p>{{ a.content }}</p>
+            <small>{{ a.date }}</small>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

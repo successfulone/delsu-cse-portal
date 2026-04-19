@@ -1,0 +1,40 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="dashboard">
+
+    <h2>🔎 Search Results</h2>
+
+    <form action="/search" method="GET">
+        <input type="text" name="q" placeholder="Search students, announcements, files...">
+        <button type="submit">Search</button>
+    </form>
+
+    <h3>Students</h3>
+    {% for s in students %}
+        <div class="card">
+            👤 {{ s.matric }} - {{ s.name }}
+        </div>
+    {% endfor %}
+
+    <h3>Announcements</h3>
+    {% for a in announcements %}
+        <div class="card">
+            📢 {{ a.title }} <br>
+            {{ a.content }}
+        </div>
+    {% endfor %}
+
+    <h3>Files</h3>
+    {% for f in files %}
+        <div class="card">
+            📄 {{ f }}
+            <a href="/download/{{ f }}">Download</a>
+        </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
