@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Login</title>
+<title>DELSU Portal Login</title>
 <link rel="stylesheet" href="/static/style.css">
 </head>
 
@@ -12,12 +12,16 @@
 
 <div class="center-box">
 
-<h3>Student Login</h3>
+<h2>COMPUTER SCIENCE EDUCATION 25/26</h2>
+<p>Student Login</p>
 
-<form method="POST">
-<input name="matric" placeholder="Matric Number" style="width:100%;padding:10px;">
-<button>Login</button>
+<form action="/login" method="POST">
+<input name="matric" placeholder="Enter Matric Number" required>
+<button type="submit">Login</button>
 </form>
+
+<br>
+<a href="/admin">Admin Login</a>
 
 </div>
 </div>

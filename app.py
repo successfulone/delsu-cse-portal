@@ -1,100 +1,89 @@
-# app.py
-from flask import Flask, render_template, request, redirect, url_for, session, flash
-import re
+from flask import Flask, render_template, request, redirect, session
+import csv
+import os
 
 app = Flask(__name__)
-app.secret_key = "change-this-secret-key"
+app.secret_key = "secretkey"
 
-# Allowed matric numbers (sample)
-ALLOWED_USERS = {
-    "FOE/25/26/123456": {"name": "John Doe", "level": "100"},
-    "FOE/25/26/654321": {"name": "Jane Smith", "level": "200"},
-    "FOE/CEP/25/26/111222": {"name": "Peter Paul", "level": "100"},
-}
+ADMIN_USERNAME = "successful"
+ADMIN_PASSWORD = "Empire223@"
 
-ADMIN_USER = "admin"
-ADMIN_PASS = "admin123"
+STUDENTS_FILE = "students.csv"
 
-
-def valid_matric(matric):
-    pattern1 = r"^FOE/25/26/\d{6}$"
-    pattern2 = r"^FOE/CEP/25/26/\d{6}$"
-    return re.match(pattern1, matric) or re.match(pattern2, matric)
-
+# Ensure file exists
+if not os.path.exists(STUDENTS_FILE):
+    with open(STUDENTS_FILE, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["matric", "name", "level"])
 
 @app.route("/")
 def home():
-    return render_template("home.html")
-
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        matric = request.form.get("matric", "").strip().upper()
-
-        if not valid_matric(matric):
-            flash("Invalid matric number format.")
-            return redirect(url_for("login"))
-
-        if matric not in ALLOWED_USERS:
-            flash("Matric number not recognized in CSE department.")
-            return redirect(url_for("login"))
-
-        session["user"] = matric
-        return redirect(url_for("dashboard"))
-
     return render_template("login.html")
 
+# STUDENT LOGIN (matric only)
+@app.route("/login", methods=["POST"])
+def login():
+    matric = request.form["matric"]
+
+    with open(STUDENTS_FILE, "r") as f:
+        reader = csv.reader(f)
+        next(reader)
+        for row in reader:
+            if row and row[0].lower() == matric.lower():
+                session["student"] = row[0]
+                return redirect("/dashboard")
+
+    return "Invalid Matric Number"
 
 @app.route("/dashboard")
 def dashboard():
-    if "user" not in session:
-        return redirect(url_for("login"))
+    if "student" not in session:
+        return redirect("/")
 
-    user = ALLOWED_USERS[session["user"]]
-    return render_template(
-        "dashboard.html",
-        matric=session["user"],
-        name=user["name"],
-        level=user["level"]
-    )
+    return render_template("dashboard.html", matric=session["student"])
 
-
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect(url_for("home"))
-
-
+# ADMIN LOGIN PAGE
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
     if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
+        u = request.form["username"].lower()
+        p = request.form["password"]
 
-        if username == ADMIN_USER and password == ADMIN_PASS:
+        if u == ADMIN_USERNAME.lower() and p == ADMIN_PASSWORD:
             session["admin"] = True
-            return redirect(url_for("admin_panel"))
-
-        flash("Invalid admin login.")
-        return redirect(url_for("admin"))
+            return redirect("/admin/dashboard")
 
     return render_template("admin_login.html")
 
+@app.route("/admin/dashboard")
+def admin_dashboard():
+    if not session.get("admin"):
+        return redirect("/admin")
 
-@app.route("/admin-panel")
-def admin_panel():
-    if "admin" not in session:
-        return redirect(url_for("admin"))
+    students = []
 
-    return render_template("admin.html", users=ALLOWED_USERS)
+    with open(STUDENTS_FILE, "r") as f:
+        reader = csv.reader(f)
+        next(reader)
+        students = list(reader)
 
+    return render_template("admin.html", students=students)
 
-@app.route("/admin-logout")
-def admin_logout():
-    session.pop("admin", None)
-    return redirect(url_for("home"))
+# ADD STUDENT
+@app.route("/add_student", methods=["POST"])
+def add_student():
+    if not session.get("admin"):
+        return redirect("/admin")
 
+    matric = request.form["matric"]
+    name = request.form["name"]
+    level = request.form["level"]
+
+    with open(STUDENTS_FILE, "a", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow([matric, name, level])
+
+    return redirect("/admin/dashboard")
 
 if __name__ == "__main__":
     app.run(debug=True)

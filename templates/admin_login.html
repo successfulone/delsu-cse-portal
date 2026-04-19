@@ -1,28 +1,26 @@
-<!-- templates/admin_login.html -->
 <!DOCTYPE html>
 <html>
 <head>
 <title>Admin Login</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="/static/style.css">
 </head>
-<body class="page">
 
-<div class="card">
-    <h2>🔐 Admin Login</h2>
+<body>
 
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <div class="alert">{{ messages[0] }}</div>
-      {% endif %}
-    {% endwith %}
+<div class="bg">
+<div class="overlay"></div>
 
-    <form method="POST">
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-    </form>
+<div class="center-box">
 
-    <a href="/">← Back Home</a>
+<h2>Admin Login</h2>
+
+<form method="POST">
+<input name="username" placeholder="Username">
+<input name="password" type="password" placeholder="Password">
+<button>Login</button>
+</form>
+
+</div>
 </div>
 
 </body>
