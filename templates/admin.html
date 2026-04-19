@@ -1,56 +1,252 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block content %}
+<title>Admin Dashboard</title>
 
-<div class="admin">
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
 
-    <h2>Admin Dashboard</h2>
+body{
+background:#eef3fb;
+padding:20px;
+}
 
-    <!-- ANNOUNCEMENTS -->
-    <h3>Post Announcement</h3>
+/* HEADER */
+.top{
+background:linear-gradient(90deg,#003399,#005eff);
+padding:18px;
+border-radius:14px;
+color:white;
+display:flex;
+align-items:center;
+gap:15px;
+margin-bottom:25px;
+box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
 
-    <form method="POST" action="/admin/add-announcement">
-        <input type="text" name="title" placeholder="Title">
-        <textarea name="content" placeholder="Content"></textarea>
-        <button type="submit">Post</button>
-    </form>
+.top img{
+width:55px;
+height:55px;
+object-fit:contain;
+background:white;
+padding:5px;
+border-radius:10px;
+}
 
-    <!-- FILE UPLOAD -->
-    <h3>Upload Department File</h3>
+.top h1{
+font-size:22px;
+}
 
-    <form method="POST" action="/admin/upload-file" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <button type="submit">Upload</button>
-    </form>
+.top p{
+font-size:13px;
+opacity:.95;
+}
 
-    <!-- FILE LIST -->
-    <h3>Uploaded Files</h3>
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:20px;
+}
 
-    {% for file in files %}
-        <div class="card">
-            📄 {{ file }}
-        </div>
-    {% endfor %}
+/* CARD */
+.card{
+background:white;
+padding:22px;
+border-radius:16px;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
 
-    <!-- STUDENTS -->
-    <h3>Students</h3>
+.card h2{
+font-size:18px;
+margin-bottom:15px;
+color:#003399;
+}
 
-    <table>
-        <tr>
-            <th>Matric</th>
-            <th>Name</th>
-            <th>Level</th>
-        </tr>
+/* INPUT */
+input, textarea, select{
+width:100%;
+padding:13px;
+margin-bottom:12px;
+border:1px solid #ddd;
+border-radius:10px;
+outline:none;
+}
 
-        {% for s in students %}
-        <tr>
-            <td>{{ s.matric }}</td>
-            <td>{{ s.name }}</td>
-            <td>{{ s.level }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+textarea{
+height:120px;
+resize:none;
+}
+
+button{
+width:100%;
+padding:13px;
+border:none;
+background:#005eff;
+color:white;
+font-weight:bold;
+border-radius:10px;
+cursor:pointer;
+}
+
+button:hover{
+background:#003399;
+}
+
+/* TABLE */
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+font-size:14px;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid #eee;
+text-align:left;
+}
+
+th{
+background:#f5f8ff;
+}
+
+.files a{
+display:block;
+padding:8px;
+background:#f7f7f7;
+margin-bottom:8px;
+border-radius:8px;
+text-decoration:none;
+color:#333;
+}
+
+@media(max-width:700px){
+.top{
+flex-direction:column;
+text-align:center;
+}
+
+.top h1{
+font-size:18px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="top">
+<img src="/static/logo.png">
+
+<div>
+<h1>Admin Dashboard</h1>
+<p>delsu.cse-25-26.edu.ng</p>
+</div>
+</div>
+
+<div class="grid">
+
+<!-- POST -->
+<div class="card">
+<h2>Post Announcement</h2>
+
+<form action="/post_announcement" method="POST">
+
+<input type="text" name="title" placeholder="Title" required>
+
+<textarea name="content" placeholder="Announcement..." required></textarea>
+
+<button type="submit">Post</button>
+
+</form>
+</div>
+
+<!-- ADD STUDENT -->
+<div class="card">
+<h2>Add Student</h2>
+
+<form action="/add_student" method="POST">
+
+<input type="text" name="matric" placeholder="Matric Number" required>
+
+<input type="text" name="name" placeholder="Full Name" required>
+
+<select name="level">
+<option>100</option>
+<option>200</option>
+<option>300</option>
+<option>400</option>
+</select>
+
+<button type="submit">Add Student</button>
+
+</form>
+</div>
+
+<!-- UPLOAD CSV -->
+<div class="card">
+<h2>Upload CSV Student List</h2>
+
+<form action="/upload_students" method="POST" enctype="multipart/form-data">
+
+<input type="file" name="file" required>
+
+<button type="submit">Upload CSV</button>
+
+</form>
+</div>
+
+<!-- FILES -->
+<div class="card">
+<h2>Upload Department File</h2>
+
+<form action="/upload_file" method="POST" enctype="multipart/form-data">
+
+<input type="file" name="file" required>
+
+<button type="submit">Upload File</button>
+
+</form>
+
+<div class="files">
+{% for file in files %}
+<a href="/downloads/{{file}}" target="_blank">{{file}}</a>
+{% endfor %}
+</div>
+</div>
 
 </div>
 
-{% endblock %}
+<!-- STUDENTS -->
+<div class="card" style="margin-top:25px;">
+<h2>Students</h2>
+
+<table>
+<tr>
+<th>Matric</th>
+<th>Name</th>
+<th>Level</th>
+</tr>
+
+{% for s in students %}
+<tr>
+<td>{{s[0]}}</td>
+<td>{{s[1]}}</td>
+<td>{{s[2]}}</td>
+</tr>
+{% endfor %}
+
+</table>
+</div>
+
+</body>
+</html>

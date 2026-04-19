@@ -3,149 +3,170 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Login | cse-25-26.edu.ng</title>
+
+<title>delsu.cse-25-26.edu.ng</title>
 
 <style>
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
 }
 
 body{
-    background:linear-gradient(135deg,#081c3a,#0f3d91,#1f5fd1);
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
+height:100vh;
+overflow:hidden;
+position:relative;
+display:flex;
+justify-content:center;
+align-items:center;
 }
 
-.container{
-    width:100%;
-    max-width:430px;
-    background:white;
-    border-radius:18px;
-    padding:35px;
-    box-shadow:0 20px 45px rgba(0,0,0,.25);
+/* FULL BACKGROUND IMAGE */
+body::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:url('/static/bg.jpg') center center/cover no-repeat;
+filter:blur(8px);
+transform:scale(1.1);
+z-index:-2;
 }
 
+/* DARK OVERLAY */
+body::after{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.45);
+z-index:-1;
+}
+
+/* LOGIN CARD */
+.card{
+width:95%;
+max-width:420px;
+background:rgba(255,255,255,0.14);
+backdrop-filter:blur(14px);
+padding:35px 28px;
+border-radius:20px;
+box-shadow:0 15px 40px rgba(0,0,0,0.35);
+color:white;
+text-align:center;
+}
+
+/* LOGO */
 .logo{
-    text-align:center;
-    font-size:30px;
-    font-weight:bold;
-    color:#0f3d91;
-    margin-bottom:10px;
+width:90px;
+height:90px;
+object-fit:contain;
+margin-bottom:12px;
+}
+
+/* TITLE */
+h1{
+font-size:24px;
+margin-bottom:8px;
 }
 
 .sub{
-    text-align:center;
-    color:#666;
-    margin-bottom:25px;
-    line-height:1.5;
-    font-size:14px;
+font-size:14px;
+opacity:0.95;
+margin-bottom:25px;
+line-height:1.5;
 }
 
-h2{
-    text-align:center;
-    margin-bottom:22px;
-    color:#111;
-}
-
-label{
-    display:block;
-    margin-bottom:8px;
-    font-size:14px;
-    font-weight:bold;
-    color:#222;
-}
-
+/* FORM */
 input{
-    width:100%;
-    padding:14px;
-    border:1px solid #ccc;
-    border-radius:10px;
-    outline:none;
-    margin-bottom:16px;
-    font-size:14px;
-}
-
-input:focus{
-    border-color:#0f3d91;
+width:100%;
+padding:14px;
+margin-bottom:15px;
+border:none;
+outline:none;
+border-radius:10px;
+font-size:14px;
 }
 
 button{
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:10px;
-    background:#0f3d91;
-    color:white;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-    transition:.3s;
+width:100%;
+padding:14px;
+border:none;
+border-radius:10px;
+background:#0056ff;
+color:white;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
 }
 
 button:hover{
-    background:#082d6c;
+background:#003cb3;
 }
 
 .error{
-    background:#ffe3e3;
-    color:#c40000;
-    padding:12px;
-    border-radius:8px;
-    margin-bottom:16px;
-    font-size:14px;
+background:#ff4d4d;
+padding:10px;
+border-radius:8px;
+margin-bottom:15px;
+font-size:14px;
 }
 
-.footer{
-    margin-top:18px;
-    text-align:center;
-    font-size:13px;
-    color:#777;
+/* MOBILE */
+@media(max-width:500px){
+.card{
+padding:25px 18px;
+}
+
+h1{
+font-size:20px;
+}
+
+.logo{
+width:75px;
+height:75px;
+}
 }
 </style>
 </head>
+
 <body>
 
-<div class="container">
+<div class="card">
 
-    <div class="logo">CSE PORTAL</div>
+<img src="/static/logo.png" class="logo">
 
-    <div class="sub">
-        cse-25-26.edu.ng<br>
-        Department of Computer Science Education<br>
-        Secure Student Access Portal
-    </div>
+<h1>CSE Portal</h1>
 
-    <h2>Student Login</h2>
+<div class="sub">
+delsu.cse-25-26.edu.ng <br>
+Department of Computer Science Education
+</div>
 
-    {% if error %}
-    <div class="error">{{ error }}</div>
-    {% endif %}
+{% if error %}
+<div class="error">{{ error }}</div>
+{% endif %}
 
-    <form method="POST">
+<form method="POST">
 
-        <label>Matric Number</label>
+<input
+type="text"
+name="matric"
+placeholder="FOE/25/26/XXXXXX or FOE/CEP/25/26/XXXXXX"
+required>
 
-        <input
-            type="text"
-            name="matric"
-            placeholder="FOE/25/26/XXXXXX or FOE/CEP/25/26/XXXXXX"
-            maxlength="21"
-            required
-        >
+<button type="submit">
+Login
+</button>
 
-        <button type="submit">Login</button>
-
-    </form>
-
-    <div class="footer">
-        Only registered Computer Science students can access this portal.
-    </div>
+</form>
 
 </div>
 
