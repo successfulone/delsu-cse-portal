@@ -1,25 +1,153 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Login | cse-25-26.edu.ng</title>
 
-{% block content %}
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
 
-<div class="form-box">
+body{
+    background:linear-gradient(135deg,#081c3a,#0f3d91,#1f5fd1);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:430px;
+    background:white;
+    border-radius:18px;
+    padding:35px;
+    box-shadow:0 20px 45px rgba(0,0,0,.25);
+}
+
+.logo{
+    text-align:center;
+    font-size:30px;
+    font-weight:bold;
+    color:#0f3d91;
+    margin-bottom:10px;
+}
+
+.sub{
+    text-align:center;
+    color:#666;
+    margin-bottom:25px;
+    line-height:1.5;
+    font-size:14px;
+}
+
+h2{
+    text-align:center;
+    margin-bottom:22px;
+    color:#111;
+}
+
+label{
+    display:block;
+    margin-bottom:8px;
+    font-size:14px;
+    font-weight:bold;
+    color:#222;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    outline:none;
+    margin-bottom:16px;
+    font-size:14px;
+}
+
+input:focus{
+    border-color:#0f3d91;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#0f3d91;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    background:#082d6c;
+}
+
+.error{
+    background:#ffe3e3;
+    color:#c40000;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:16px;
+    font-size:14px;
+}
+
+.footer{
+    margin-top:18px;
+    text-align:center;
+    font-size:13px;
+    color:#777;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="logo">CSE PORTAL</div>
+
+    <div class="sub">
+        cse-25-26.edu.ng<br>
+        Department of Computer Science Education<br>
+        Secure Student Access Portal
+    </div>
 
     <h2>Student Login</h2>
 
-    <p class="hint">
-        Format: FOE/25/26/XXXXXX or FOE/CEP/25/26/XXXXXX
-    </p>
-
     {% if error %}
-        <p class="error">{{ error }}</p>
+    <div class="error">{{ error }}</div>
     {% endif %}
 
     <form method="POST">
-        <input type="text" name="matric" placeholder="Matric Number" required>
-        <input type="password" name="password" placeholder="Password" required>
+
+        <label>Matric Number</label>
+
+        <input
+            type="text"
+            name="matric"
+            placeholder="FOE/25/26/XXXXXX or FOE/CEP/25/26/XXXXXX"
+            maxlength="21"
+            required
+        >
+
         <button type="submit">Login</button>
+
     </form>
+
+    <div class="footer">
+        Only registered Computer Science students can access this portal.
+    </div>
 
 </div>
 
-{% endblock %}
+</body>
+</html>
