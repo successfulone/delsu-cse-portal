@@ -1,24 +1,24 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, session, send_from_directory
 import sqlite3
 import os
+import csv
 
 app = Flask(__name__)
-app.secret_key = "secret-key-change-this"
+app.secret_key = "secret"
 
 DB = "database.db"
 UPLOAD_FOLDER = "uploads"
 
-ADMIN_USERNAME = "successful"
-ADMIN_PASSWORD = "Empire223@"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
-# ---------------- DB INIT ----------------
-def init_db():
+# ---------------- DB ----------------
+def init():
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
 
     cur.execute("""
-    CREATE TABLE IF NOT EXISTS students (
+    CREATE TABLE IF NOT EXISTS students(
         matric TEXT PRIMARY KEY,
         name TEXT,
         level TEXT
@@ -28,7 +28,7 @@ def init_db():
     conn.commit()
     conn.close()
 
-init_db()
+init()
 
 
 # ---------------- HOME ----------------
@@ -38,24 +38,22 @@ def home():
 
 
 # ---------------- LOGIN ----------------
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/login", methods=["GET","POST"])
 def login():
     if request.method == "POST":
-        matric = request.form["matric"].upper()
+        matric = request.form["matric"].strip().upper()
 
         conn = sqlite3.connect(DB)
         cur = conn.cursor()
 
-        cur.execute("SELECT * FROM students WHERE matric=?", (matric,))
+        cur.execute("SELECT * FROM students WHERE UPPER(matric)=?", (matric,))
         user = cur.fetchone()
 
         conn.close()
 
         if user:
-            session["student"] = matric
+            session["student"] = user[0]
             return redirect("/dashboard")
-
-        return render_template("login.html", error="Invalid Matric Number")
 
     return render_template("login.html")
 
@@ -69,14 +67,14 @@ def dashboard():
     return render_template("dashboard.html", matric=session["student"])
 
 
-# ---------------- ADMIN LOGIN ----------------
-@app.route("/admin_login", methods=["GET", "POST"])
+# ---------------- ADMIN LOGIN (CASE INSENSITIVE) ----------------
+@app.route("/admin_login", methods=["GET","POST"])
 def admin_login():
     if request.method == "POST":
-        username = request.form["username"]
+        username = request.form["username"].lower().strip()
         password = request.form["password"]
 
-        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+        if username == "successful" and password == "Empire223@":
             session["admin"] = True
             return redirect("/admin")
 
@@ -91,13 +89,11 @@ def admin():
 
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
-
     cur.execute("SELECT * FROM students")
     students = cur.fetchall()
-
     conn.close()
 
-    files = os.listdir(UPLOAD_FOLDER) if os.path.exists(UPLOAD_FOLDER) else []
+    files = os.listdir(UPLOAD_FOLDER)
 
     return render_template("admin.html", students=students, files=files)
 
@@ -105,7 +101,7 @@ def admin():
 # ---------------- ADD STUDENT ----------------
 @app.route("/add_student", methods=["POST"])
 def add_student():
-    matric = request.form["matric"].upper()
+    matric = request.form["matric"].strip().upper()
     name = request.form["name"]
     level = request.form["level"]
 
@@ -121,9 +117,46 @@ def add_student():
     return redirect("/admin")
 
 
-# ---------------- DELETE STUDENT ----------------
-@app.route("/delete_student/<matric>")
-def delete_student(matric):
+# ---------------- BULK CSV UPLOAD ----------------
+@app.route("/upload_students", methods=["POST"])
+def upload_students():
+    file = request.files["file"]
+    path = os.path.join(UPLOAD_FOLDER, file.filename)
+    file.save(path)
+
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+
+    with open(path, newline='') as f:
+        reader = csv.reader(f)
+        for row in reader:
+            if len(row) >= 2:
+                cur.execute("INSERT OR REPLACE INTO students VALUES (?,?,?)",
+                            (row[0].upper(), row[1], row[2] if len(row)>2 else "ND"))
+
+    conn.commit()
+    conn.close()
+
+    return redirect("/admin")
+
+
+# ---------------- FILE UPLOAD (FIXED 404) ----------------
+@app.route("/upload_file", methods=["POST"])
+def upload_file():
+    file = request.files["file"]
+    file.save(os.path.join(UPLOAD_FOLDER, file.filename))
+    return redirect("/admin")
+
+
+# ---------------- DOWNLOAD FILES ----------------
+@app.route("/downloads/<filename>")
+def downloads(filename):
+    return send_from_directory(UPLOAD_FOLDER, filename)
+
+
+# ---------------- DELETE ----------------
+@app.route("/delete/<matric>")
+def delete(matric):
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
 
@@ -134,33 +167,11 @@ def delete_student(matric):
     return redirect("/admin")
 
 
-# ---------------- SEARCH STUDENT ----------------
-@app.route("/search_student", methods=["POST"])
-def search_student():
-    matric = request.form["matric"].upper()
-
-    conn = sqlite3.connect(DB)
-    cur = conn.cursor()
-
-    cur.execute("SELECT * FROM students WHERE matric=?", (matric,))
-    student = cur.fetchone()
-
-    conn.close()
-
-    return render_template("admin.html", search=student)
-
-
 # ---------------- LOGOUT ----------------
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/login")
-
-
-@app.route("/admin_logout")
-def admin_logout():
-    session.pop("admin", None)
-    return redirect("/admin_login")
 
 
 if __name__ == "__main__":

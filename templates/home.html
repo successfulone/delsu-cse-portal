@@ -1,189 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>delsu.cse-25-26.edu.ng</title>
+<title>CSE Portal</title>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial, Helvetica, sans-serif;
-}
-
 body{
-background:#f5f8ff;
-}
-
-/* NAVBAR */
-nav{
-background:linear-gradient(90deg,#003399,#005eff);
-padding:15px 30px;
-display:flex;
-justify-content:space-between;
-align-items:center;
+margin:0;
+font-family:Arial;
 color:white;
-flex-wrap:wrap;
+background:url("/static/bg.jpg") center/cover no-repeat;
 }
 
-.brand{
-display:flex;
-align-items:center;
-gap:12px;
+.overlay{
+background:rgba(0,0,0,0.6);
+min-height:100vh;
+padding:80px;
 }
 
-.brand img{
-width:45px;
-height:45px;
-background:white;
-padding:4px;
-border-radius:8px;
+h1{
+font-size:40px;
 }
 
-.brand h2{
-font-size:20px;
-}
-
-.links a{
-color:white;
-text-decoration:none;
-margin-left:18px;
-font-size:14px;
-}
-
-/* HERO */
-.hero{
-padding:60px 20px;
-text-align:center;
-background:url('/static/bg.jpg') center/cover no-repeat;
-position:relative;
-color:white;
-}
-
-.hero::before{
-content:"";
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.55);
-}
-
-.hero .content{
-position:relative;
-z-index:2;
-max-width:800px;
-margin:auto;
-}
-
-.hero h1{
-font-size:38px;
-margin-bottom:15px;
-}
-
-.hero p{
-font-size:18px;
-line-height:1.7;
-}
-
-/* POSTS */
-.section{
-padding:40px 20px;
-max-width:1100px;
-margin:auto;
-}
-
-.post{
-background:white;
-padding:22px;
-margin-bottom:18px;
-border-radius:14px;
-box-shadow:0 8px 22px rgba(0,0,0,.08);
-}
-
-.post h3{
-color:#003399;
-margin-bottom:8px;
-}
-
-footer{
-text-align:center;
-padding:30px;
-color:#666;
-font-size:14px;
-}
-
-@media(max-width:700px){
-
-.hero h1{
-font-size:28px;
-}
-
-.hero p{
-font-size:16px;
-}
-
-.links{
-margin-top:10px;
-width:100%;
-}
-
-.links a{
-display:inline-block;
-margin:6px;
-}
+p{
+max-width:700px;
+line-height:1.6;
 }
 </style>
+
 </head>
 
 <body>
 
-<nav>
+<div class="overlay">
 
-<div class="brand">
-<img src="/static/logo.png">
-<h2>CSE Portal</h2>
-</div>
-
-<div class="links">
-<a href="/">Home</a>
-<a href="/login">Login</a>
-<a href="/admin">Admin</a>
-</div>
-
-</nav>
-
-<section class="hero">
-
-<div class="content">
-<h1>delsu.cse-25-26.edu.ng</h1>
+<h1>COMPUTER SCIENCE EDUCATION 25/26</h1>
 
 <p>
-Welcome to the Department of Computer Science Education Portal.  
-Access announcements, student services, academic resources and departmental updates.
+Welcome to the Department of Computer Science Education Portal.
+This platform provides access to announcements, academic resources,
+student services, and departmental updates.
 </p>
+
 </div>
-
-</section>
-
-<section class="section">
-
-{% for post in posts %}
-<div class="post">
-<h3>{{post[1]}}</h3>
-<p>{{post[2]}}</p>
-</div>
-{% endfor %}
-
-</section>
-
-<footer>
-© 2026 Department of Computer Science Education | DELSU Style Portal
-</footer>
 
 </body>
 </html>
