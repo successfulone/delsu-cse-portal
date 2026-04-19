@@ -1,0 +1,194 @@
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #eef2f7;
+    color: #222;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar {
+    background: linear-gradient(90deg, #0a3d2e, #117a55);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.navbar .logo {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.navbar a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+/* ================= HERO ================= */
+
+.hero {
+    background: linear-gradient(135deg, #0a3d2e, #145c43, #1e7a5c);
+    color: white;
+    text-align: center;
+    padding: 90px 20px;
+}
+
+.hero h1 {
+    font-size: 34px;
+}
+
+.hero h2 {
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+/* ================= CARDS ================= */
+
+.card {
+    background: white;
+    padding: 18px;
+    margin: 10px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* ================= GRID ================= */
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    padding: 20px;
+}
+
+/* ================= FORMS ================= */
+
+form {
+    margin-top: 10px;
+}
+
+form input {
+    padding: 10px;
+    width: 70%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+form button {
+    padding: 10px 15px;
+    background: #0a3d2e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background: #145c43;
+}
+
+/* ================= TABLE ================= */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    margin-top: 20px;
+}
+
+th {
+    background: #0a3d2e;
+    color: white;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+/* ================= DASHBOARD ================= */
+
+.dashboard {
+    padding: 30px;
+}
+
+/* ================= ADMIN ================= */
+
+.admin {
+    padding: 30px;
+}
+
+/* ================= SEARCH UI ================= */
+
+.search-box {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.search-box input {
+    padding: 12px;
+    width: 60%;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.search-box button {
+    padding: 12px 18px;
+    background: #0a3d2e;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* ================= FOOTER ================= */
+
+footer {
+    background: #0a3d2e;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 40px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 600px) {
+
+    .navbar {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    form input {
+        width: 100%;
+    }
+
+    .hero h1 {
+        font-size: 24px;
+    }
+}

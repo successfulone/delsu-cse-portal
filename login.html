@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="form-box">
+
+    <h2>Student Login</h2>
+
+    <p class="hint">
+        Format: FOE/25/26/XXXXXX or FOE/CEP/25/26/XXXXXX
+    </p>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <input type="text" name="matric" placeholder="Matric Number" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+
+</div>
+
+{% endblock %}
