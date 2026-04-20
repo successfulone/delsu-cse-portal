@@ -1,33 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CSE 25/26 Portal</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE Portal</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
 
-<header class="navbar">
-    <div class="logo">
-        🏛️ CSE 25/26 Portal
+<div class="nav">
+    <div><b>CSE 25/26 PORTAL</b></div>
+    <div>
+        <a href="/" style="color:white">Home</a>
+        <a href="/login" style="color:white">Login</a>
+        <a href="/admin" style="color:white">Admin</a>
     </div>
+</div>
 
-    <nav>
-        <a href="/">Home</a>
-        <a href="/login">Login</a>
-        <a href="/dashboard">Dashboard</a>
-        <a href="/admin">Admin</a>
-    </nav>
-</header>
+<div class="hero">
+    COMPUTER SCIENCE EDUCATION 25/26
+</div>
 
-<main>
+<div class="container">
     {% block content %}{% endblock %}
-</main>
-
-<footer>
-    © 2026 Department of Computer Science Education | DELSU Style Portal
-</footer>
+</div>
 
 </body>
 </html>

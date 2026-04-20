@@ -1,29 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Student Dashboard</title>
-<link rel="stylesheet" href="/static/style.css">
-</head>
+{% extends "base.html" %}
 
-<body>
-
-<div class="header">
-COMPUTER SCIENCE EDUCATION 25/26
-</div>
-
-<div class="dashboard">
+{% block content %}
 
 <div class="card">
-<h3>Welcome Student</h3>
-<p>Your Matric Number: {{ matric }}</p>
+    <h2>Student Dashboard</h2>
+    <p><b>Matric:</b> {{ matric }}</p>
 </div>
 
 <div class="card">
-<h3>Department Info</h3>
-<p>Welcome to Computer Science Education Department Portal.</p>
+    <h3>Department Notice</h3>
+    <p>Welcome to Computer Science Education Department Portal.</p>
 </div>
 
-</div>
-
-</body>
-</html>
+{% endblock %}

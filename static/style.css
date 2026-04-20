@@ -1,70 +1,71 @@
 body {
     margin: 0;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: Arial, sans-serif;
+    background: #f2f4f8;
 }
 
-/* LOGIN + HOME BACKGROUND */
-.bg {
-    background: url("/static/bg.jpg") no-repeat center center/cover;
-    height: 100vh;
+/* NAVBAR */
+.nav {
+    background: #0b1f3a;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* HERO */
+.hero {
+    background: url("/static/bg.jpg") center/cover no-repeat;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
     position: relative;
 }
 
-.overlay {
+.hero::after {
+    content: "";
     position: absolute;
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.6);
 }
 
-/* CENTER BOX */
-.center-box {
-    position: relative;
-    z-index: 2;
-    max-width: 400px;
-    margin: auto;
-    top: 20%;
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-}
-
-/* HEADER */
-.header {
-    background: #0d1b2a;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-weight: bold;
-}
-
-/* BUTTONS */
-button {
-    width: 100%;
-    padding: 10px;
-    background: #0077b6;
-    border: none;
-    color: white;
-    margin-top: 10px;
-    border-radius: 5px;
-}
-
-/* DASHBOARD */
-.dashboard {
+/* CONTAINER */
+.container {
     padding: 20px;
 }
 
+/* CARDS */
 .card {
     background: white;
     padding: 20px;
-    margin-bottom: 15px;
+    margin: 15px 0;
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* INPUT */
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background: #0b1f3a;
+    color: white;
+    border: none;
 }
 
 /* LOGO */
 .logo {
     width: 80px;
-    display: block;
-    margin: 0 auto 10px;
 }

@@ -1,28 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Home</title>
-<link rel="stylesheet" href="/static/style.css">
-</head>
+{% extends "base.html" %}
 
-<body>
+{% block content %}
 
-<div class="bg">
-<div class="overlay"></div>
-
-<div class="center-box" style="text-align:center;">
-
-<img src="/static/logo.png" class="logo">
-
-<h2>COMPUTER SCIENCE EDUCATION 25/26</h2>
-
-<p>
-Welcome to the Department of Computer Science Education Portal.
-Access announcements, student services, academic resources, and departmental updates.
-</p>
-
-</div>
+<div class="card">
+    <h2>Welcome to DELSU CSE Portal</h2>
+    <p>
+        Official Department of Computer Science Education Portal.
+        Access student login, academic updates, announcements, and resources.
+    </p>
 </div>
 
-</body>
-</html>
+{% endblock %}

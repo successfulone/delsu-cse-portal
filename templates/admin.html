@@ -1,33 +1,24 @@
-<!-- templates/admin.html -->
-<!DOCTYPE html>
-<html>
-<head>
-<title>Admin Panel</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body class="page">
+{% extends "base.html" %}
 
-<div class="card large">
-    <h2>📊 Admin Dashboard</h2>
+{% block content %}
 
-    <table>
-        <tr>
-            <th>Matric Number</th>
-            <th>Name</th>
-            <th>Level</th>
-        </tr>
+<div class="card">
+    <h2>Admin Dashboard</h2>
 
-        {% for matric, data in users.items() %}
-        <tr>
-            <td>{{ matric }}</td>
-            <td>{{ data.name }}</td>
-            <td>{{ data.level }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <a href="/admin-logout" class="btn">Logout</a>
+    <form method="POST" action="/add_student">
+        <input name="matric" placeholder="Matric Number">
+        <input name="name" placeholder="Full Name">
+        <input name="level" placeholder="Level">
+        <button>Add Student</button>
+    </form>
 </div>
 
-</body>
-</html>
+<div class="card">
+    <h3>Students</h3>
+
+    {% for s in students %}
+        <p>{{ s[0] }} | {{ s[1] }} | {{ s[2] }}</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
