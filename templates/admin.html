@@ -18,12 +18,12 @@
     </div>
 
     <div class="card">
-        <h2>12</h2>
+        <h2>📂</h2>
         <p>Uploaded Resources</p>
     </div>
 
     <div class="card">
-        <h2>4</h2>
+        <h2>📢</h2>
         <p>Pending Notices</p>
     </div>
 
@@ -34,7 +34,7 @@
 
 </div>
 
-<!-- Add Student -->
+<!-- ADD STUDENT -->
 <div class="card">
     <h2>Add New Student</h2>
 
@@ -49,9 +49,24 @@
     </form>
 </div>
 
-<!-- Upload Files -->
+<!-- BULK UPLOAD CSV -->
 <div class="card">
-    <h2>Upload Department Resource</h2>
+    <h2>📤 Bulk Upload Students (CSV)</h2>
+
+    <form method="POST" action="/bulk_upload" enctype="multipart/form-data">
+
+        <input type="file" name="file" required>
+
+        <button type="submit">Upload CSV</button>
+
+    </form>
+
+    <p><b>Format:</b> matric,name,level</p>
+</div>
+
+<!-- FILE UPLOAD -->
+<div class="card">
+    <h2>📁 Upload Department Resource</h2>
 
     <form method="POST" action="/upload" enctype="multipart/form-data">
 
@@ -60,9 +75,11 @@
         <button type="submit">Upload File</button>
 
     </form>
+
+    <p>Uploaded files appear in Downloads section</p>
 </div>
 
-<!-- Student Table -->
+<!-- STUDENT TABLE -->
 <div class="card">
     <h2>Registered Students</h2>
 
@@ -85,19 +102,19 @@
     </table>
 </div>
 
-<!-- Admin Actions -->
+<!-- QUICK ACTIONS -->
 <div class="card">
     <h2>Quick Actions</h2>
 
     <div class="grid">
 
-        <div>
-            <a href="/"><button>Visit Homepage</button></a>
-        </div>
+        <a href="/">
+            <button>Visit Homepage</button>
+        </a>
 
-        <div>
-            <a href="/logout"><button>Logout</button></a>
-        </div>
+        <a href="/logout">
+            <button style="background:red;">Logout</button>
+        </a>
 
     </div>
 </div>
