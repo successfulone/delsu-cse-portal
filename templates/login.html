@@ -2,13 +2,51 @@
 
 {% block content %}
 
-<div class="card">
-    <h2>Student Login</h2>
+<div class="grid">
 
-    <form method="POST">
-        <input name="matric" placeholder="Enter Matric Number">
-        <button>Login</button>
-    </form>
+    <!-- Login Box -->
+    <div class="card">
+        <h2>Student Login</h2>
+        <p>
+            Enter your matric number to access your student dashboard.
+            Login is not case-sensitive.
+        </p>
+
+        <form method="POST">
+
+            <input type="text"
+                   name="matric"
+                   placeholder="Enter Matric Number"
+                   required>
+
+            <button type="submit">Login</button>
+
+        </form>
+
+        <br>
+
+        <p><b>Example Format:</b></p>
+        <p>FOE/25/26/321196</p>
+        <p>foe/25/26/321196</p>
+    </div>
+
+    <!-- Info Box -->
+    <div class="card">
+        <h2>Need Help?</h2>
+
+        <p>✔ Ensure your matric number exists in department records.</p>
+        <p>✔ Use full matric format.</p>
+        <p>✔ Contact admin if login fails.</p>
+
+        <hr><br>
+
+        <h3>Student Services</h3>
+        <p>• Notices</p>
+        <p>• Academic Resources</p>
+        <p>• Downloads</p>
+        <p>• Department Updates</p>
+    </div>
+
 </div>
 
 {% endblock %}

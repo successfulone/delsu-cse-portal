@@ -2,14 +2,93 @@
 
 {% block content %}
 
+<!-- Welcome Banner -->
 <div class="card">
-    <h2>Student Dashboard</h2>
-    <p><b>Matric:</b> {{ matric }}</p>
+    <span class="badge">Student Portal</span>
+    <h2>Welcome, {{ name }}</h2>
+
+    <p><b>Matric Number:</b> {{ matric }}</p>
+    <p><b>Level:</b> {{ level }}</p>
 </div>
 
+<!-- Quick Stats -->
+<div class="grid">
+
+    <div class="card">
+        <h3>📘 Courses</h3>
+        <p>Registered Courses: 8</p>
+    </div>
+
+    <div class="card">
+        <h3>📢 Notices</h3>
+        <p>3 New Updates</p>
+    </div>
+
+    <div class="card">
+        <h3>📅 Events</h3>
+        <p>2 Upcoming Activities</p>
+    </div>
+
+    <div class="card">
+        <h3>📂 Resources</h3>
+        <p>Available Downloads</p>
+    </div>
+
+</div>
+
+<!-- Student Actions -->
 <div class="card">
-    <h3>Department Notice</h3>
-    <p>Welcome to Computer Science Education Department Portal.</p>
+    <h2>Quick Actions</h2>
+
+    <div class="grid">
+
+        <div>
+            <a href="/downloads"><button>Download Materials</button></a>
+        </div>
+
+        <div>
+            <a href="/search"><button>Search Records</button></a>
+        </div>
+
+        <div>
+            <a href="/logout"><button>Logout</button></a>
+        </div>
+
+    </div>
+</div>
+
+<!-- Announcements -->
+<div class="card">
+    <h2>Latest Announcements</h2>
+
+    <p>📌 Semester exams timetable coming soon.</p>
+    <p>📌 Students should verify registration details.</p>
+    <p>📌 Seminar on AI and Education next Friday.</p>
+    <p>📌 ICT practical classes resume Monday.</p>
+</div>
+
+<!-- Department Opportunities -->
+<div class="card">
+    <h2>Opportunities</h2>
+
+    <div class="grid">
+
+        <div class="card">
+            <h3>💼 Internship</h3>
+            <p>Tech internship openings for students.</p>
+        </div>
+
+        <div class="card">
+            <h3>🏆 Hackathon</h3>
+            <p>Join the annual coding contest.</p>
+        </div>
+
+        <div class="card">
+            <h3>🎓 Scholarship</h3>
+            <p>Merit support programs available.</p>
+        </div>
+
+    </div>
 </div>
 
 {% endblock %}

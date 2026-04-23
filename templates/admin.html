@@ -2,23 +2,104 @@
 
 {% block content %}
 
+<!-- Header -->
 <div class="card">
+    <span class="badge">Administrator Panel</span>
     <h2>Admin Dashboard</h2>
+    <p>Manage students, files, analytics and department operations.</p>
+</div>
+
+<!-- Analytics -->
+<div class="grid">
+
+    <div class="card">
+        <h2>{{ total }}</h2>
+        <p>Total Students</p>
+    </div>
+
+    <div class="card">
+        <h2>12</h2>
+        <p>Uploaded Resources</p>
+    </div>
+
+    <div class="card">
+        <h2>4</h2>
+        <p>Pending Notices</p>
+    </div>
+
+    <div class="card">
+        <h2>100%</h2>
+        <p>System Online</p>
+    </div>
+
+</div>
+
+<!-- Add Student -->
+<div class="card">
+    <h2>Add New Student</h2>
 
     <form method="POST" action="/add_student">
-        <input name="matric" placeholder="Matric Number">
-        <input name="name" placeholder="Full Name">
-        <input name="level" placeholder="Level">
-        <button>Add Student</button>
+
+        <input type="text" name="matric" placeholder="Matric Number" required>
+        <input type="text" name="name" placeholder="Full Name" required>
+        <input type="text" name="level" placeholder="Level (100/200...)" required>
+
+        <button type="submit">Add Student</button>
+
     </form>
 </div>
 
+<!-- Upload Files -->
 <div class="card">
-    <h3>Students</h3>
+    <h2>Upload Department Resource</h2>
 
-    {% for s in students %}
-        <p>{{ s[0] }} | {{ s[1] }} | {{ s[2] }}</p>
-    {% endfor %}
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+
+        <input type="file" name="file" required>
+
+        <button type="submit">Upload File</button>
+
+    </form>
+</div>
+
+<!-- Student Table -->
+<div class="card">
+    <h2>Registered Students</h2>
+
+    <table>
+
+        <tr>
+            <th>Matric</th>
+            <th>Name</th>
+            <th>Level</th>
+        </tr>
+
+        {% for s in students %}
+        <tr>
+            <td>{{ s[1] }}</td>
+            <td>{{ s[2] }}</td>
+            <td>{{ s[3] }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+</div>
+
+<!-- Admin Actions -->
+<div class="card">
+    <h2>Quick Actions</h2>
+
+    <div class="grid">
+
+        <div>
+            <a href="/"><button>Visit Homepage</button></a>
+        </div>
+
+        <div>
+            <a href="/logout"><button>Logout</button></a>
+        </div>
+
+    </div>
 </div>
 
 {% endblock %}

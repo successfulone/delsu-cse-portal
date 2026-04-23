@@ -1,28 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>CSE Portal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSE 25/26 Portal</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
-
 <body>
 
-<div class="nav">
-    <div><b>CSE 25/26 PORTAL</b></div>
-    <div>
-        <a href="/" style="color:white">Home</a>
-        <a href="/login" style="color:white">Login</a>
-        <a href="/admin" style="color:white">Admin</a>
+<!-- NAVBAR -->
+<div class="navbar">
+    <h2>CSE 25/26 Portal</h2>
+
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/login">Student Login</a>
+        <a href="/downloads">Resources</a>
+        <a href="/search">Search</a>
+        <a href="/admin">Admin</a>
     </div>
 </div>
 
+<!-- HERO -->
 <div class="hero">
-    COMPUTER SCIENCE EDUCATION 25/26
+    <h1>COMPUTER SCIENCE EDUCATION 25/26</h1>
+    <p>
+        Welcome to the Department of Computer Science Education portal.
+        Access student services, academic resources, announcements,
+        departmental updates and modern learning tools.
+    </p>
 </div>
 
+<!-- MAIN CONTENT -->
 <div class="container">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="card">
+                {% for msg in messages %}
+                    <p>{{ msg }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
     {% block content %}{% endblock %}
 </div>
+
+<!-- FOOTER -->
+<footer>
+    © 2026 Department of Computer Science Education | DELSU Style Portal
+</footer>
 
 </body>
 </html>

@@ -1,40 +1,64 @@
-
 {% extends "base.html" %}
 
 {% block content %}
 
-<div class="dashboard">
+<div class="card">
+    <span class="badge">Student Search</span>
+    <h2>Search Student Records</h2>
+    <p>Search using matric number or student name.</p>
 
-    <h2>🔎 Search Results</h2>
+    <form method="GET">
 
-    <form action="/search" method="GET">
-        <input type="text" name="q" placeholder="Search students, announcements, files...">
+        <input type="text"
+               name="query"
+               placeholder="Enter matric or name"
+               value="{{ query }}">
+
         <button type="submit">Search</button>
+
     </form>
+</div>
 
-    <h3>Students</h3>
-    {% for s in students %}
-        <div class="card">
-            👤 {{ s.matric }} - {{ s.name }}
-        </div>
-    {% endfor %}
+{% if query %}
 
-    <h3>Announcements</h3>
-    {% for a in announcements %}
-        <div class="card">
-            📢 {{ a.title }} <br>
-            {{ a.content }}
-        </div>
-    {% endfor %}
+<div class="card">
+    <h2>Search Results</h2>
 
-    <h3>Files</h3>
-    {% for f in files %}
-        <div class="card">
-            📄 {{ f }}
-            <a href="/download/{{ f }}">Download</a>
-        </div>
-    {% endfor %}
+    {% if results %}
 
+    <table>
+
+        <tr>
+            <th>Matric</th>
+            <th>Name</th>
+            <th>Level</th>
+        </tr>
+
+        {% for r in results %}
+        <tr>
+            <td>{{ r[1] }}</td>
+            <td>{{ r[2] }}</td>
+            <td>{{ r[3] }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    {% else %}
+
+    <p>No student found.</p>
+
+    {% endif %}
+</div>
+
+{% endif %}
+
+<div class="card">
+    <h2>Search Tips</h2>
+
+    <p>✔ Use full matric number for exact match</p>
+    <p>✔ Use part of name for quick search</p>
+    <p>✔ Search is case-insensitive</p>
 </div>
 
 {% endblock %}

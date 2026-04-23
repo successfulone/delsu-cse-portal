@@ -2,14 +2,48 @@
 
 {% block content %}
 
-<div class="card">
-    <h2>Admin Login</h2>
+<div class="grid">
 
-    <form method="POST">
-        <input name="username" placeholder="Username">
-        <input name="password" type="password" placeholder="Password">
-        <button>Login</button>
-    </form>
+    <!-- Login -->
+    <div class="card">
+        <h2>Administrator Login</h2>
+
+        <p>
+            Authorized departmental staff only.
+        </p>
+
+        <form method="POST">
+
+            <input type="text"
+                   name="username"
+                   placeholder="Enter Username"
+                   required>
+
+            <input type="password"
+                   name="password"
+                   placeholder="Enter Password"
+                   required>
+
+            <button type="submit">Login</button>
+
+        </form>
+    </div>
+
+    <!-- Info -->
+    <div class="card">
+        <h2>Admin Functions</h2>
+
+        <p>✔ Add students</p>
+        <p>✔ Manage records</p>
+        <p>✔ Upload CSV data</p>
+        <p>✔ Post announcements</p>
+        <p>✔ Department management</p>
+
+        <hr><br>
+
+        <p><b>Login is case-insensitive.</b></p>
+    </div>
+
 </div>
 
 {% endblock %}

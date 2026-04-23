@@ -1,71 +1,262 @@
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f2f4f8;
+Excellent choice.
+
+Your backend is becoming real — now we upgrade the **look, feel, movement, polish, prestige**.
+
+# 🎓 NEXT LEVEL UI UPGRADE (V4)
+
+We will transform your site into a **modern premium university portal**.
+
+---
+
+# 🚀 WHAT YOU WILL GET
+
+## 🌟 Homepage
+
+* Hero image background
+* Animated counters
+* Course cards
+* Department gallery
+* Testimonials
+* HOD message
+* Smooth hover effects
+
+## 🎓 Student Dashboard
+
+* Profile card
+* Quick action widgets
+* Better layout
+* Elegant cards
+
+## 🛠️ Admin Dashboard
+
+* Analytics cards
+* Better tables
+* Upload center
+* Beautiful controls
+
+## 📱 Mobile Friendly
+
+* Smooth responsive design
+
+## ✨ Premium Feel
+
+* Shadows
+* Gradients
+* Rounded cards
+* Better spacing
+* Professional typography
+
+---
+
+# 📁 STEP 1 — FILE NAME: `static/style.css`
+
+## 🔁 Replace FULL file with:
+
+```css id="ui_css_v4"
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:Segoe UI,Arial,sans-serif;
+background:#eef3fa;
+color:#1d1d1d;
+line-height:1.6;
 }
 
 /* NAVBAR */
-.nav {
-    background: #0b1f3a;
-    color: white;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
+.navbar{
+background:linear-gradient(90deg,#0b2c5f,#123e84);
+padding:18px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+box-shadow:0 4px 12px rgba(0,0,0,.12);
+}
+
+.navbar h2{
+color:#ffd24c;
+font-size:28px;
+font-weight:800;
+}
+
+.nav-links a{
+color:#fff;
+text-decoration:none;
+margin-left:20px;
+font-weight:600;
+transition:.3s;
+}
+
+.nav-links a:hover{
+color:#ffd24c;
 }
 
 /* HERO */
-.hero {
-    background: url("/static/bg.jpg") center/cover no-repeat;
-    height: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 22px;
-    font-weight: bold;
-    position: relative;
+.hero{
+min-height:70vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:40px;
+background:
+linear-gradient(rgba(10,30,70,.72),rgba(10,30,70,.72)),
+url('/static/bg.jpg') center/cover no-repeat;
+color:white;
 }
 
-.hero::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.6);
+.hero h1{
+font-size:52px;
+max-width:900px;
+margin-bottom:20px;
+font-weight:900;
 }
 
-/* CONTAINER */
-.container {
-    padding: 20px;
+.hero p{
+font-size:20px;
+max-width:760px;
+opacity:.96;
 }
 
-/* CARDS */
-.card {
-    background: white;
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+/* MAIN */
+.container{
+width:92%;
+max-width:1280px;
+margin:auto;
+padding:50px 0;
 }
 
-/* INPUT */
-input {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:24px;
 }
 
-/* BUTTON */
-button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    background: #0b1f3a;
-    color: white;
-    border: none;
+/* CARD */
+.card{
+background:white;
+padding:28px;
+border-radius:18px;
+box-shadow:0 10px 24px rgba(0,0,0,.08);
+transition:.3s;
+margin-bottom:24px;
 }
 
-/* LOGO */
-.logo {
-    width: 80px;
+.card:hover{
+transform:translateY(-4px);
+box-shadow:0 18px 30px rgba(0,0,0,.12);
 }
+
+.card h2,.card h3{
+margin-bottom:14px;
+color:#0b2c5f;
+}
+
+/* BUTTONS */
+button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:12px;
+background:linear-gradient(90deg,#0b2c5f,#1d56b3);
+color:white;
+font-weight:700;
+cursor:pointer;
+transition:.3s;
+}
+
+button:hover{
+transform:scale(1.02);
+background:linear-gradient(90deg,#ffd24c,#e6b100);
+color:#0b2c5f;
+}
+
+/* FORMS */
+input,select{
+width:100%;
+padding:14px;
+border:1px solid #d7dbe5;
+border-radius:12px;
+margin-bottom:14px;
+font-size:15px;
+}
+
+/* TABLE */
+table{
+width:100%;
+border-collapse:collapse;
+overflow:hidden;
+border-radius:12px;
+}
+
+th{
+background:#0b2c5f;
+color:white;
+padding:14px;
+}
+
+td{
+padding:12px;
+border-bottom:1px solid #ececec;
+}
+
+tr:hover{
+background:#f7f9fd;
+}
+
+/* FOOTER */
+footer{
+margin-top:60px;
+padding:35px;
+background:#0b2c5f;
+color:white;
+text-align:center;
+}
+
+/* BADGES */
+.badge{
+display:inline-block;
+padding:8px 14px;
+background:#ffd24c;
+color:#0b2c5f;
+border-radius:50px;
+font-weight:700;
+margin-top:10px;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+.hero h1{
+font-size:34px;
+}
+
+.hero p{
+font-size:16px;
+}
+
+.navbar{
+padding:18px 20px;
+}
+
+.nav-links{
+margin-top:10px;
+}
+
+.nav-links a{
+display:inline-block;
+margin:8px 10px 0 0;
+}
+
+.container{
+width:95%;
+}
+
+}
+```
