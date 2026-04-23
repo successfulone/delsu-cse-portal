@@ -7,10 +7,22 @@
     <!-- Login Box -->
     <div class="card">
         <h2>Student Login</h2>
+
         <p>
-            Enter your matric number to access your student dashboard.
+            Enter your matric number to access your dashboard.
             Login is not case-sensitive.
         </p>
+
+        <!-- ERROR MESSAGE (NEW FIX) -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for msg in messages %}
+                    <p style="color:red; font-weight:bold;">
+                        {{ msg }}
+                    </p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
         <form method="POST">
 
@@ -25,24 +37,24 @@
 
         <br>
 
-        <p><b>Example Format:</b></p>
+        <p><b>Accepted Format:</b></p>
         <p>FOE/25/26/321196</p>
-        <p>foe/25/26/321196</p>
+        <p>foe/25/26/321196 (still works)</p>
     </div>
 
-    <!-- Info Box -->
+    <!-- Info Panel -->
     <div class="card">
-        <h2>Need Help?</h2>
+        <h2>Important Notice</h2>
 
-        <p>✔ Ensure your matric number exists in department records.</p>
-        <p>✔ Use full matric format.</p>
-        <p>✔ Contact admin if login fails.</p>
+        <p>✔ Use correct matric format</p>
+        <p>✔ System is case-insensitive</p>
+        <p>✔ Contact admin if login fails</p>
 
-        <hr><br>
+        <hr>
 
-        <h3>Student Services</h3>
-        <p>• Notices</p>
+        <h3>Portal Services</h3>
         <p>• Academic Resources</p>
+        <p>• Announcements</p>
         <p>• Downloads</p>
         <p>• Department Updates</p>
     </div>

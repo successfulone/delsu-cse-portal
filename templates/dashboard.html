@@ -2,13 +2,18 @@
 
 {% block content %}
 
-<!-- Welcome Banner -->
+<!-- Welcome Section -->
 <div class="card">
     <span class="badge">Student Portal</span>
     <h2>Welcome, {{ name }}</h2>
 
     <p><b>Matric Number:</b> {{ matric }}</p>
     <p><b>Level:</b> {{ level }}</p>
+
+    <p>
+        Access your academic dashboard, download materials, view courses,
+        and stay updated with departmental information.
+    </p>
 </div>
 
 <!-- Quick Stats -->
@@ -16,76 +21,80 @@
 
     <div class="card">
         <h3>📘 Courses</h3>
-        <p>Registered Courses: 8</p>
+        <p>View your registered courses</p>
     </div>
 
     <div class="card">
-        <h3>📢 Notices</h3>
-        <p>3 New Updates</p>
-    </div>
-
-    <div class="card">
-        <h3>📅 Events</h3>
-        <p>2 Upcoming Activities</p>
+        <h3>📢 Announcements</h3>
+        <p>Department updates and notices</p>
     </div>
 
     <div class="card">
         <h3>📂 Resources</h3>
-        <p>Available Downloads</p>
+        <p>Lecture materials and files</p>
+    </div>
+
+    <div class="card">
+        <h3>📅 Events</h3>
+        <p>Upcoming departmental activities</p>
     </div>
 
 </div>
 
-<!-- Student Actions -->
+<!-- ACTION BUTTONS -->
 <div class="card">
     <h2>Quick Actions</h2>
 
     <div class="grid">
 
-        <div>
-            <a href="/downloads"><button>Download Materials</button></a>
-        </div>
+        <a href="/downloads">
+            <button>Download Materials</button>
+        </a>
 
-        <div>
-            <a href="/search"><button>Search Records</button></a>
-        </div>
+        <a href="/courses">
+            <button>View Courses</button>
+        </a>
 
-        <div>
-            <a href="/logout"><button>Logout</button></a>
-        </div>
+        <a href="/search">
+            <button>Search Records</button>
+        </a>
+
+        <a href="/logout">
+            <button style="background:red;">Logout</button>
+        </a>
 
     </div>
 </div>
 
-<!-- Announcements -->
+<!-- ANNOUNCEMENTS -->
 <div class="card">
-    <h2>Latest Announcements</h2>
+    <h2>Department Announcements</h2>
 
-    <p>📌 Semester exams timetable coming soon.</p>
-    <p>📌 Students should verify registration details.</p>
-    <p>📌 Seminar on AI and Education next Friday.</p>
-    <p>📌 ICT practical classes resume Monday.</p>
+    <p>📌 Course registration closes soon.</p>
+    <p>📌 Practical exams schedule will be released.</p>
+    <p>📌 Students should verify their records.</p>
+    <p>📌 Seminar on ICT in Education coming up.</p>
 </div>
 
-<!-- Department Opportunities -->
+<!-- OPPORTUNITIES -->
 <div class="card">
     <h2>Opportunities</h2>
 
     <div class="grid">
 
         <div class="card">
-            <h3>💼 Internship</h3>
-            <p>Tech internship openings for students.</p>
+            <h3>💼 Internships</h3>
+            <p>Tech industry placements available</p>
         </div>
 
         <div class="card">
-            <h3>🏆 Hackathon</h3>
-            <p>Join the annual coding contest.</p>
+            <h3>🏆 Competitions</h3>
+            <p>Coding and innovation contests</p>
         </div>
 
         <div class="card">
-            <h3>🎓 Scholarship</h3>
-            <p>Merit support programs available.</p>
+            <h3>🎓 Scholarships</h3>
+            <p>Academic support programs</p>
         </div>
 
     </div>

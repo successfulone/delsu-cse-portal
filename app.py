@@ -1,7 +1,6 @@
-from flask import Flask, render_template, request, redirect, session, send_from_directory
+from flask import Flask, render_template, request, redirect, session, flash, send_from_directory
 import os
 import sqlite3
-from database import init_db
 
 app = Flask(__name__)
 app.secret_key = "cse_portal_secret_2026"
@@ -9,10 +8,8 @@ app.secret_key = "cse_portal_secret_2026"
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-init_db()
 
-
-# ---------------- DB CONNECTION ----------------
+# ---------------- DATABASE ----------------
 def db():
     conn = sqlite3.connect("portal.db")
     return conn
@@ -32,7 +29,6 @@ def login():
 
         conn = db()
         cur = conn.cursor()
-
         cur.execute("SELECT * FROM students")
         students = cur.fetchall()
 
@@ -42,6 +38,8 @@ def login():
                 session["name"] = s[2]
                 session["level"] = s[3]
                 return redirect("/dashboard")
+
+        flash("Invalid matric number. Please contact admin.")
 
     return render_template("login.html")
 
@@ -60,7 +58,7 @@ def dashboard():
     )
 
 
-# ---------------- DOWNLOAD FILES ----------------
+# ---------------- DOWNLOADS ----------------
 @app.route("/downloads")
 def downloads():
     conn = db()
@@ -70,7 +68,7 @@ def downloads():
     return render_template("downloads.html", files=files)
 
 
-# ---------------- DOWNLOAD ACTION ----------------
+# ---------------- FILE DOWNLOAD ----------------
 @app.route("/file/<filename>")
 def file(filename):
     return send_from_directory(UPLOAD_FOLDER, filename, as_attachment=True)
@@ -86,6 +84,8 @@ def admin():
         if u == "successful" and p == "empire223":
             session["admin"] = True
             return redirect("/admin/dashboard")
+
+        flash("Invalid admin login details")
 
     return render_template("admin_login.html")
 
@@ -128,26 +128,54 @@ def add_student():
     return redirect("/admin/dashboard")
 
 
-# ---------------- FILE UPLOAD ----------------
-@app.route("/upload", methods=["POST"])
-def upload():
+# ---------------- DELETE STUDENT ----------------
+@app.route("/delete_student/<int:student_id>")
+def delete_student(student_id):
     if not session.get("admin"):
         return redirect("/admin")
 
-    file = request.files["file"]
+    conn = db()
+    cur = conn.cursor()
 
-    if file:
-        path = os.path.join(UPLOAD_FOLDER, file.filename)
-        file.save(path)
-
-        conn = db()
-        cur = conn.cursor()
-
-        cur.execute("INSERT INTO files (filename, filepath) VALUES (?, ?)",
-                    (file.filename, path))
-        conn.commit()
+    cur.execute("DELETE FROM students WHERE id = ?", (student_id,))
+    conn.commit()
 
     return redirect("/admin/dashboard")
+
+
+# ---------------- COURSES (FULL FEATURE ADDED CLEANLY) ----------------
+@app.route("/courses")
+def courses():
+    if "student" not in session:
+        return redirect("/login")
+
+    matric = session.get("student", "").lower()
+
+    # AUTO DETECT CEP OR REGULAR (OPTION A)
+    is_cep = "cep" in matric or "ce/" in matric
+
+    regular_courses = [
+        "CSC101 - Introduction to Computer Science",
+        "CSC102 - Programming Fundamentals",
+        "CSC103 - Computer Systems",
+        "CSC104 - Problem Solving Techniques",
+        "GST101 - Communication Skills"
+    ]
+
+    cep_courses = [
+        "CEP101 - Foundations of Education",
+        "CEP102 - Teaching Methods",
+        "CSC105 - Computer Education Basics",
+        "CSC106 - ICT in Education",
+        "GST102 - Use of English"
+    ]
+
+    return render_template(
+        "courses.html",
+        is_cep=is_cep,
+        regular=regular_courses,
+        cep=cep_courses
+    )
 
 
 # ---------------- SEARCH ----------------

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card">
+    <span class="badge">Academic Courses Portal</span>
+    <h2>Your Department Courses</h2>
+    <p>Automatically generated based on your programme type.</p>
+</div>
+
+<div class="grid">
+
+    <div class="card">
+        <h2>Regular Programme</h2>
+
+        {% if not is_cep %}
+            {% for c in regular %}
+                <p>📘 {{ c }}</p>
+            {% endfor %}
+        {% else %}
+            <p style="opacity:0.6;">Not assigned to Regular programme</p>
+        {% endif %}
+
+    </div>
+
+    <div class="card">
+        <h2>CEP Programme</h2>
+
+        {% if is_cep %}
+            {% for c in cep %}
+                <p>📗 {{ c }}</p>
+            {% endfor %}
+        {% else %}
+            <p style="opacity:0.6;">Not assigned to CEP programme</p>
+        {% endif %}
+
+    </div>
+
+</div>
+
+<div class="card">
+    <h2>Important Notice</h2>
+    <p>✔ Courses auto-assigned based on matric pattern</p>
+    <p>✔ Contact admin if incorrect classification</p>
+</div>
+
+{% endblock %}
