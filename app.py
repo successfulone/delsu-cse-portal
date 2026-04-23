@@ -15,6 +15,34 @@ def db():
     return conn
 
 
+# AUTO CREATE TABLES (FIX FOR RENDER ERROR)
+def init_db():
+    conn = sqlite3.connect("portal.db")
+    cur = conn.cursor()
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS students (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        matric TEXT,
+        name TEXT,
+        level TEXT
+    )
+    """)
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS files (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        filename TEXT,
+        filepath TEXT
+    )
+    """)
+
+    conn.commit()
+    conn.close()
+
+
+init_db()
+
 # ---------------- HOME ----------------
 @app.route("/")
 def home():
