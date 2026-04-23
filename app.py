@@ -5,7 +5,7 @@ import sqlite3
 app = Flask(__name__)
 app.secret_key = "cse_portal_secret_2026"
 
-UPLOAD_FOLDER = "uploads"
+UPLOAD_FOLDER = os.path.join(os.getcwd(), "uploads")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
@@ -166,6 +166,38 @@ def delete_student(student_id):
     cur = conn.cursor()
 
     cur.execute("DELETE FROM students WHERE id = ?", (student_id,))
+    conn.commit()
+
+    return redirect("/admin/dashboard")
+
+@app.route("/upload", methods=["POST"])
+def upload():
+    if not session.get("admin"):
+        return redirect("/admin")
+
+    # ✅ SAFETY CHECK START
+    if "file" not in request.files:
+        flash("No file selected")
+        return redirect("/admin/dashboard")
+
+    file = request.files["file"]
+
+    if file.filename == "":
+        flash("Empty file selected")
+        return redirect("/admin/dashboard")
+    # ✅ SAFETY CHECK END
+
+    filepath = os.path.join(UPLOAD_FOLDER, file.filename)
+    file.save(filepath)
+
+    conn = db()
+    cur = conn.cursor()
+
+    cur.execute(
+        "INSERT INTO files (filename, filepath) VALUES (?, ?)",
+        (file.filename, filepath)
+    )
+
     conn.commit()
 
     return redirect("/admin/dashboard")
