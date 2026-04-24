@@ -2,14 +2,14 @@
 
 {% block content %}
 
-<!-- Header -->
+<!-- HEADER -->
 <div class="card">
     <span class="badge">Administrator Panel</span>
     <h2>Admin Dashboard</h2>
     <p>Manage students, files, analytics and department operations.</p>
 </div>
 
-<!-- Analytics -->
+<!-- ANALYTICS -->
 <div class="grid">
 
     <div class="card">
@@ -18,7 +18,7 @@
     </div>
 
     <div class="card">
-        <h2>📂</h2>
+        <h2>{{ files|length }}</h2>
         <p>Uploaded Resources</p>
     </div>
 
@@ -61,12 +61,12 @@
 
     </form>
 
-    <p><b>Format:</b> matric,name,level</p>
+    <p>Format: matric,name,level</p>
 </div>
 
 <!-- FILE UPLOAD -->
 <div class="card">
-    <h2>📁 Upload Department Resource</h2>
+    <h2>📤 Upload Department Resource</h2>
 
     <form method="POST" action="/upload" enctype="multipart/form-data">
 
@@ -76,7 +76,7 @@
 
     </form>
 
-    <p>Uploaded files appear in Downloads section</p>
+    <p>Lecture notes, PDFs, announcements, etc.</p>
 </div>
 
 <!-- STUDENT TABLE -->
@@ -89,6 +89,7 @@
             <th>Matric</th>
             <th>Name</th>
             <th>Level</th>
+            <th>Action</th>
         </tr>
 
         {% for s in students %}
@@ -96,10 +97,35 @@
             <td>{{ s[1] }}</td>
             <td>{{ s[2] }}</td>
             <td>{{ s[3] }}</td>
+
+            <td>
+                <a href="/delete_student/{{ s[0] }}"
+                   onclick="return confirm('Are you sure you want to delete this student?')"
+                   style="color:red;">
+                    Delete
+                </a>
+            </td>
         </tr>
         {% endfor %}
 
     </table>
+</div>
+
+<!-- FILES SECTION -->
+<div class="card">
+    <h2>📁 Department Resources</h2>
+
+    {% for f in files %}
+        <div style="margin-bottom:10px;">
+            📄 {{ f[1] }}
+
+            <a href="/file/{{ f[1] }}">Download</a>
+
+            <a href="/delete_file/{{ f[0] }}" style="color:red;">
+                Delete
+            </a>
+        </div>
+    {% endfor %}
 </div>
 
 <!-- QUICK ACTIONS -->

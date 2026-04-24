@@ -8,16 +8,13 @@ app.secret_key = "cse_portal_secret_2026"
 UPLOAD_FOLDER = os.path.join(os.getcwd(), "uploads")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-
 # ---------------- DATABASE ----------------
 def db():
-    conn = sqlite3.connect("portal.db")
-    return conn
+    return sqlite3.connect("portal.db")
 
-
-# AUTO CREATE TABLES (FIX FOR RENDER ERROR)
+# ---------------- INIT DB ----------------
 def init_db():
-    conn = sqlite3.connect("portal.db")
+    conn = db()
     cur = conn.cursor()
 
     cur.execute("""
@@ -40,14 +37,12 @@ def init_db():
     conn.commit()
     conn.close()
 
-
 init_db()
 
 # ---------------- HOME ----------------
 @app.route("/")
 def home():
     return render_template("home.html")
-
 
 # ---------------- LOGIN ----------------
 @app.route("/login", methods=["GET", "POST"])
@@ -67,10 +62,9 @@ def login():
                 session["level"] = s[3]
                 return redirect("/dashboard")
 
-        flash("Invalid matric number. Please contact admin.")
+        flash("Invalid matric number")
 
     return render_template("login.html")
-
 
 # ---------------- DASHBOARD ----------------
 @app.route("/dashboard")
@@ -85,7 +79,6 @@ def dashboard():
         level=session["level"]
     )
 
-
 # ---------------- DOWNLOADS ----------------
 @app.route("/downloads")
 def downloads():
@@ -93,14 +86,13 @@ def downloads():
     cur = conn.cursor()
     cur.execute("SELECT * FROM files")
     files = cur.fetchall()
-    return render_template("downloads.html", files=files)
 
+    return render_template("downloads.html", files=files)
 
 # ---------------- FILE DOWNLOAD ----------------
 @app.route("/file/<filename>")
-def file(filename):
+def file_download(filename):
     return send_from_directory(UPLOAD_FOLDER, filename, as_attachment=True)
-
 
 # ---------------- ADMIN LOGIN ----------------
 @app.route("/admin", methods=["GET", "POST"])
@@ -117,7 +109,6 @@ def admin():
 
     return render_template("admin_login.html")
 
-
 # ---------------- ADMIN DASHBOARD ----------------
 @app.route("/admin/dashboard")
 def admin_dashboard():
@@ -130,11 +121,18 @@ def admin_dashboard():
     cur.execute("SELECT * FROM students")
     students = cur.fetchall()
 
+    cur.execute("SELECT * FROM files")
+    files = cur.fetchall()
+
     cur.execute("SELECT COUNT(*) FROM students")
     total = cur.fetchone()[0]
 
-    return render_template("admin.html", students=students, total=total)
-
+    return render_template(
+        "admin.html",
+        students=students,
+        files=files,
+        total=total
+    )
 
 # ---------------- ADD STUDENT ----------------
 @app.route("/add_student", methods=["POST"])
@@ -149,12 +147,13 @@ def add_student():
     conn = db()
     cur = conn.cursor()
 
-    cur.execute("INSERT INTO students (matric, name, level) VALUES (?, ?, ?)",
-                (matric, name, level))
+    cur.execute(
+        "INSERT INTO students (matric, name, level) VALUES (?, ?, ?)",
+        (matric, name, level)
+    )
+
     conn.commit()
-
     return redirect("/admin/dashboard")
-
 
 # ---------------- DELETE STUDENT ----------------
 @app.route("/delete_student/<int:student_id>")
@@ -170,48 +169,96 @@ def delete_student(student_id):
 
     return redirect("/admin/dashboard")
 
+# ---------------- UPLOAD FILE ----------------
 @app.route("/upload", methods=["POST"])
 def upload():
     if not session.get("admin"):
         return redirect("/admin")
 
-    # ✅ SAFETY CHECK START
     if "file" not in request.files:
         flash("No file selected")
         return redirect("/admin/dashboard")
 
-    file = request.files["file"]
+    upload_file = request.files["file"]
 
-    if file.filename == "":
+    if upload_file.filename == "":
         flash("Empty file selected")
         return redirect("/admin/dashboard")
-    # ✅ SAFETY CHECK END
 
-    filepath = os.path.join(UPLOAD_FOLDER, file.filename)
-    file.save(filepath)
+    filepath = os.path.join(UPLOAD_FOLDER, upload_file.filename)
+    upload_file.save(filepath)
 
     conn = db()
     cur = conn.cursor()
 
     cur.execute(
         "INSERT INTO files (filename, filepath) VALUES (?, ?)",
-        (file.filename, filepath)
+        (upload_file.filename, filepath)
     )
 
     conn.commit()
 
     return redirect("/admin/dashboard")
 
+# ---------------- BULK UPLOAD ----------------
+@app.route("/bulk_upload", methods=["POST"])
+def bulk_upload():
+    if not session.get("admin"):
+        return redirect("/admin")
 
-# ---------------- COURSES (FULL FEATURE ADDED CLEANLY) ----------------
+    if "file" not in request.files:
+        flash("No CSV file selected")
+        return redirect("/admin/dashboard")
+
+    csv_file = request.files["file"]
+
+    stream = csv_file.stream.read().decode("utf-8").splitlines()
+
+    conn = db()
+    cur = conn.cursor()
+
+    for row in stream:
+        data = row.split(",")
+
+        if len(data) == 3:
+            cur.execute(
+                "INSERT INTO students (matric, name, level) VALUES (?, ?, ?)",
+                (data[0].strip(), data[1].strip(), data[2].strip())
+            )
+
+    conn.commit()
+    return redirect("/admin/dashboard")
+
+# ---------------- DELETE FILE ----------------
+@app.route("/delete_file/<int:file_id>")
+def delete_file(file_id):
+    if not session.get("admin"):
+        return redirect("/admin")
+
+    conn = db()
+    cur = conn.cursor()
+
+    cur.execute("SELECT filepath FROM files WHERE id = ?", (file_id,))
+    file_record = cur.fetchone()
+
+    if file_record:
+        try:
+            os.remove(file_record[0])
+        except:
+            pass
+
+    cur.execute("DELETE FROM files WHERE id = ?", (file_id,))
+    conn.commit()
+
+    return redirect("/admin/dashboard")
+
+# ---------------- COURSES ----------------
 @app.route("/courses")
 def courses():
     if "student" not in session:
         return redirect("/login")
 
     matric = session.get("student", "").lower()
-
-    # AUTO DETECT CEP OR REGULAR (OPTION A)
     is_cep = "cep" in matric or "ce/" in matric
 
     regular_courses = [
@@ -237,9 +284,8 @@ def courses():
         cep=cep_courses
     )
 
-
 # ---------------- SEARCH ----------------
-@app.route("/search", methods=["GET"])
+@app.route("/search")
 def search():
     query = request.args.get("query", "")
 
@@ -249,21 +295,18 @@ def search():
     cur.execute("SELECT * FROM students")
     students = cur.fetchall()
 
-    results = []
-
-    for s in students:
-        if query.lower() in s[1].lower() or query.lower() in s[2].lower():
-            results.append(s)
+    results = [
+        s for s in students
+        if query.lower() in s[1].lower() or query.lower() in s[2].lower()
+    ]
 
     return render_template("search.html", results=results, query=query)
-
 
 # ---------------- LOGOUT ----------------
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
-
 
 if __name__ == "__main__":
     app.run(debug=True)
