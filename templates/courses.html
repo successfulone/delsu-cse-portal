@@ -1,47 +1,69 @@
 {% extends "base.html" %}
-
 {% block content %}
 
 <div class="card">
-    <span class="badge">Academic Courses Portal</span>
-    <h2>Your Department Courses</h2>
-    <p>Automatically generated based on your programme type.</p>
+    <h2>Registered Courses</h2>
+
+    {% if is_cep %}
+        <p>Programme: CEP Student</p>
+    {% else %}
+        <p>Programme: Regular Student</p>
+    {% endif %}
 </div>
 
-<div class="grid">
+<!-- COURSES LIST -->
+<div class="card">
+    <h2>First Semester</h2>
 
-    <div class="card">
-        <h2>Regular Programme</h2>
-
-        {% if not is_cep %}
-            {% for c in regular %}
-                <p>📘 {{ c }}</p>
-            {% endfor %}
-        {% else %}
-            <p style="opacity:0.6;">Not assigned to Regular programme</p>
-        {% endif %}
-
-    </div>
-
-    <div class="card">
-        <h2>CEP Programme</h2>
+    <table>
+        <tr>
+            <th>Course</th>
+        </tr>
 
         {% if is_cep %}
             {% for c in cep %}
-                <p>📗 {{ c }}</p>
+            <tr>
+                <td>{{ c }}</td>
+            </tr>
             {% endfor %}
         {% else %}
-            <p style="opacity:0.6;">Not assigned to CEP programme</p>
+            {% for c in regular %}
+            <tr>
+                <td>{{ c }}</td>
+            </tr>
+            {% endfor %}
         {% endif %}
-
-    </div>
-
+    </table>
 </div>
 
 <div class="card">
-    <h2>Important Notice</h2>
-    <p>✔ Courses auto-assigned based on matric pattern</p>
-    <p>✔ Contact admin if incorrect classification</p>
+    <h2>Second Semester</h2>
+
+    <table>
+        <tr>
+            <th>Course</th>
+        </tr>
+
+        {% if is_cep %}
+            {% for c in cep %}
+            <tr>
+                <td>{{ c }}</td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            {% for c in regular %}
+            <tr>
+                <td>{{ c }}</td>
+            </tr>
+            {% endfor %}
+        {% endif %}
+    </table>
+</div>
+
+<div class="card">
+    <a href="/dashboard">
+        <button>Back to Dashboard</button>
+    </a>
 </div>
 
 {% endblock %}

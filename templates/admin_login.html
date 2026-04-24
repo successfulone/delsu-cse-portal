@@ -4,15 +4,24 @@
 
 <div class="grid">
 
-    <!-- Login -->
+    <!-- LOGIN CARD -->
     <div class="card">
         <h2>Administrator Login</h2>
 
-        <p>
-            Authorized departmental staff only.
-        </p>
+        <p>Authorized departmental staff only.</p>
 
-        <form method="POST">
+        <!-- Flash messages (IMPORTANT FIX) -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div style="color:red; margin-bottom:10px;">
+                    {% for msg in messages %}
+                        <p>{{ msg }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="/admin">
 
             <input type="text"
                    name="username"
@@ -29,19 +38,20 @@
         </form>
     </div>
 
-    <!-- Info -->
+    <!-- INFO CARD -->
     <div class="card">
         <h2>Admin Functions</h2>
 
         <p>✔ Add students</p>
-        <p>✔ Manage records</p>
+        <p>✔ Manage student records</p>
         <p>✔ Upload CSV data</p>
-        <p>✔ Post announcements</p>
-        <p>✔ Department management</p>
+        <p>✔ Upload & manage department resources</p>
+        <p>✔ Delete files & students</p>
+        <p>✔ View analytics dashboard</p>
 
         <hr><br>
 
-        <p><b>Login is case-insensitive.</b></p>
+        <p><b>Note:</b> Login is case-insensitive.</p>
     </div>
 
 </div>

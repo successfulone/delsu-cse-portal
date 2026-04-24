@@ -1,69 +1,33 @@
 {% extends "base.html" %}
-
 {% block content %}
 
 <div class="card">
-    <span class="badge">Resources Center</span>
-    <h2>Department Downloads</h2>
-    <p>
-        Access lecture notes, forms, departmental documents,
-        past questions and official resources.
-    </p>
+    <h2>Department Resources</h2>
+    <p>Preview and download academic materials</p>
 </div>
 
-{% if files %}
-
-<div class="grid">
-
-{% for file in files %}
-
+<!-- FILE LIST (SAFE VERSION) -->
 <div class="card">
+    <h2>📁 Available Resources</h2>
 
-    <h3>📄 {{ file[1] }}</h3>
+    {% if files %}
+        {% for f in files %}
 
-    <p>Official uploaded department file.</p>
+        <div style="margin-bottom:15px; padding:10px; border:1px solid #ddd; border-radius:8px;">
 
-    <a href="/file/{{ file[1] }}">
-        <button>Download</button>
-    </a>
+            📄 <b>{{ f[1] }}</b><br><br>
 
-</div>
+            <!-- SAFE LINKS -->
+            <a href="/file/{{ f[1] }}" target="_blank">Preview</a> |
+            <a href="/file/{{ f[1] }}" download>Download</a>
 
-{% endfor %}
-
-</div>
-
-{% else %}
-
-<div class="card">
-    <h2>No Files Yet</h2>
-    <p>Admin has not uploaded any resources yet.</p>
-</div>
-
-{% endif %}
-
-<!-- Popular Materials -->
-<div class="card">
-    <h2>Popular Academic Materials</h2>
-
-    <div class="grid">
-
-        <div class="card">
-            <h3>📘 Python Programming</h3>
-            <p>Beginner to advanced guide.</p>
         </div>
 
-        <div class="card">
-            <h3>📗 Database Systems</h3>
-            <p>SQL and normalization notes.</p>
-        </div>
+        {% endfor %}
+    {% else %}
+        <p>No resources uploaded yet.</p>
+    {% endif %}
 
-        <div class="card">
-            <h3>📙 Networking</h3>
-            <p>OSI model and protocols.</p>
-        </div>
-
-    </div>
 </div>
 
 {% endblock %}

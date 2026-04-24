@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card">
+    <h2>GPA Calculator</h2>
+    <p>Enter course units and grades</p>
+</div>
+
+<div class="card">
+
+    <form method="POST">
+
+        {% for i in range(1,7) %}
+
+        <h3>Course {{ i }}</h3>
+
+        <input type="number" name="unit{{ i }}" placeholder="Unit" required>
+
+        <select name="grade{{ i }}" required>
+            <option value="">Select Grade</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+        </select>
+
+        <br><br>
+
+        {% endfor %}
+
+        <button type="submit">Calculate GPA</button>
+
+    </form>
+
+</div>
+
+{% if result is defined %}
+<div class="card">
+    <h2>Your GPA: {{ result }}</h2>
+</div>
+{% endif %}
+
+<div class="card">
+    <a href="/dashboard">
+        <button>Back to Dashboard</button>
+    </a>
+</div>
+
+{% endblock %}
